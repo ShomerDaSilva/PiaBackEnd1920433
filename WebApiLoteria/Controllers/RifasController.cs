@@ -22,8 +22,10 @@ namespace WebApiLoteria.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(Rifa rifa)
+        public async Task<ActionResult> Post([FromBody] Rifa rifa)
         {
+            var existeRifa = await dbContext.Rifas.AnyAsync(x => x.NombreRifa == rifa.NombreRifa);
+
             dbContext.Add(rifa);
             await dbContext.SaveChangesAsync();
             return Ok();
