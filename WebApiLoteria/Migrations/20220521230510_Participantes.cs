@@ -14,9 +14,9 @@ namespace WebApiLoteria.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApellidoP = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApellidoM = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Nombre = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    ApellidoP = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    ApellidoM = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     RifaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

@@ -11,8 +11,8 @@ using WebApiLoteria;
 namespace WebApiLoteria.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220518012209_Inicial")]
-    partial class Inicial
+    [Migration("20220521230416_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,9 @@ namespace WebApiLoteria.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("NombreRifa")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.HasKey("Id");
 

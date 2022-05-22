@@ -3,7 +3,7 @@ using WebApiLoteria.Entidades;
 
 namespace WebApiLoteria
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
@@ -11,6 +11,6 @@ namespace WebApiLoteria
         }
 
         public DbSet<Rifa> Rifas { get; set; }
-        public DbSet<Participante> Participantes { get; set;}
+        public DbSet<Participante> Participantes { get; set; }
     }
 }

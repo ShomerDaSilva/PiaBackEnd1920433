@@ -1,11 +1,37 @@
 {
   "Version": 1,
-  "Hash": "UgxkUss+fO7CXFs5Rv0SqOjcEADXcxL626dIez+avrs=",
+  "Hash": "esw4uTOO73LkDiXkMlzUJSbofQ3IClYGBOw/nheFLEg=",
   "Source": "WebApiLoteria",
   "BasePath": "_content/WebApiLoteria",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "WebApiLoteria\\wwwroot",
+      "Source": "WebApiLoteria",
+      "ContentRoot": "C:\\Users\\Shome\\source\\repos\\WebApiLoteria\\WebApiLoteria\\wwwroot\\",
+      "BasePath": "_content/WebApiLoteria",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Shome\\source\\repos\\WebApiLoteria\\WebApiLoteria\\wwwroot\\ArchivoInicio.txt",
+      "SourceId": "WebApiLoteria",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Shome\\source\\repos\\WebApiLoteria\\WebApiLoteria\\wwwroot\\",
+      "BasePath": "_content/WebApiLoteria",
+      "RelativePath": "ArchivoInicio.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\ArchivoInicio.txt"
+    }
+  ]
 }

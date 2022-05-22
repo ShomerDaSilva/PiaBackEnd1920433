@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using WebApiLoteria.Fitros;
+using WebApiLoteria.Services;
 
 namespace WebApiLoteria
 {
@@ -15,8 +17,12 @@ namespace WebApiLoteria
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddJsonOptions(x =>
-            x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+            services.AddControllers(opciones =>
+            {
+                opciones.Filters.Add(typeof(FiltroDeExcepcion));
+            }).AddJsonOptions(x =>
+            x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles).AddNewtonsoftJson();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddDbContext<ApplicationDbContext>(options =>
                         options.UseSqlServer(Configuration.GetConnectionString("defaultConnetion")));
@@ -26,6 +32,9 @@ namespace WebApiLoteria
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIArtistas", Version = "v1" });
 
             });
+            services.AddTransient<FiltroPersonalizado>();
+            services.AddHostedService<EscribirEnArchivo>();
+            services.AddAutoMapper(typeof(Startup));
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

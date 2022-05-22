@@ -1,40 +1,33 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebApiLoteria.Validaciones;
 
 namespace WebApiLoteria.Entidades
 {
-    public class Participante
+    public class Participante : IValidatableObject
     {
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es necesario")]
         [StringLength(maximumLength: 15, ErrorMessage = "El campo {0} no puede tener mas de {1} caracteres")]
-        [PrimeraLetraMayuscula]
-        public string Nombre { get; set;}
+        //[PrimeraLetraMayuscula]
+        public string Nombre { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es necesario")]
         [StringLength(maximumLength: 15, ErrorMessage = "El campo {0} no puede tener mas de {1} caracteres")]
-        [PrimeraLetraMayuscula]
+        //[PrimeraLetraMayuscula]
         public string ApellidoP { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es necesario")]
         [StringLength(maximumLength: 15, ErrorMessage = "El campo {0} no puede tener mas de {1} caracteres")]
-        [PrimeraLetraMayuscula]
+        //[PrimeraLetraMayuscula]
         public string ApellidoM { get; set; }
-        
-        [Required]
-        [EmailAddress]
-        public string Email { get; set;}
 
-        [Required]
-        [Phone]
-        public int Phone { get; set; }
+        public DateTime? FechaInscripcion { get; set; }
 
-        public int RifaId { get; set;}
+        public int RifaId { get; set; }
 
         public Rifa Rifa { get; set; }
 
-        /*public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!string.IsNullOrEmpty(Nombre))
             {
@@ -65,8 +58,6 @@ namespace WebApiLoteria.Entidades
                             new string[] { nameof(ApellidoM) });
                 }
             }
-        }*/
-
-
+        }
     }
 }
