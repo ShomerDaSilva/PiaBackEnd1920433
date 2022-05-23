@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +24,7 @@ namespace WebApiLoteria.Controllers
             this.logger = logger;
             this.mapper = mapper;
         }
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
         [HttpGet]
         [ServiceFilter(typeof(FiltroPersonalizado))]
         public async Task<ActionResult<List<Participante>>> GetAll()
@@ -74,7 +76,7 @@ namespace WebApiLoteria.Controllers
 
 
         }
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(CrearParticipanteDTO crearParticipanteDTO, int id)
         {
@@ -89,7 +91,7 @@ namespace WebApiLoteria.Controllers
             await dbContext.SaveChangesAsync();
             return NoContent();
         }
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -102,6 +104,7 @@ namespace WebApiLoteria.Controllers
             await dbContext.SaveChangesAsync();
             return Ok();
         }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
         [HttpPatch("{id:int}")]
         public async Task<ActionResult> Patch(int id, JsonPatchDocument<ParticipantePatchDTO> patchDocument)
         {
