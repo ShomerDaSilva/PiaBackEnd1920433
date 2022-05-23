@@ -36,17 +36,15 @@ namespace WebApiLoteria.Controllers
         }
 
         [HttpGet("{id:int}", Name = "obtenerRifa")]
-        public async Task<ActionResult<RifaDTOConParticipantes>> Get(int id)
+        public async Task<ActionResult<GetRifasDTO>> Get(int id)
         {
-            var rifa = await dbContext.Rifas.Include(rifaDB => rifaDB.RifasParticipantes)
-                .ThenInclude(rifaparticipanteDB => rifaparticipanteDB.Participante)
-                .FirstOrDefaultAsync(rifaBD => rifaBD.Id == id);
+            var rifa = await dbContext.Rifas.FirstOrDefaultAsync(rifaBD => rifaBD.Id == id);
             if (rifa == null)
             {
                 return NotFound();
             }
 
-            return mapper.Map<RifaDTOConParticipantes>(rifa);
+            return mapper.Map<GetRifasDTO>(rifa);
         }
 
         [HttpPost]

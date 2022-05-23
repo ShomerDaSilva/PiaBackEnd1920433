@@ -25,6 +25,7 @@ namespace WebApiLoteria.Utilidades
             CreateMap<ParticipanteDTO, Rifa>();
             CreateMap<ParticipanteDTO, Participante>();
             CreateMap<Participante, GetParticipantesDTO>();
+            CreateMap<Rifa, GetRifasDTO>();
         }
 
         //private List<RifaParticipante> MapRifaParticipante(CrearParticipanteDTO crearParticipanteDTO, Participante participante)

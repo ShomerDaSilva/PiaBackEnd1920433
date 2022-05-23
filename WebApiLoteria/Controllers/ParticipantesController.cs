@@ -119,6 +119,7 @@ namespace WebApiLoteria.Controllers
                 return NotFound();
             }
             var participanteDTO = mapper.Map<ParticipantePatchDTO>(participanteDB);
+            participanteDB.Id = id;
             patchDocument.ApplyTo(participanteDTO);
             var esValid = TryValidateModel(participanteDTO);
             if (!esValid)
