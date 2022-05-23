@@ -10,6 +10,6 @@ namespace WebApiLoteria.Entidades
         public string NombreRifa { get; set; }
 
 
-        public List<Participante> participantes { get; set; }
+        public List<RifaParticipante> RifasParticipantes { get; set; }
     }
 }

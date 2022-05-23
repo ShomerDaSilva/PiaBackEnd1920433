@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebApiLoteria.DTOs;
@@ -9,6 +11,7 @@ namespace WebApiLoteria.Controllers
 {
     [ApiController]
     [Route("api/rifas")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class RifasController : ControllerBase
     {
 
@@ -25,18 +28,26 @@ namespace WebApiLoteria.Controllers
 
         [HttpGet]
         [ServiceFilter(typeof(FiltroPersonalizado))]
-        public async Task<ActionResult<List<Rifa>>> Get()
+        public async Task<List<RifaDTO>> Get()
         {
             logger.LogInformation("Se obtiene el listado de rifas");
-            return await dbContext.Rifas.ToListAsync();
+            var rifas = await dbContext.Rifas.ToListAsync();
+            return mapper.Map<List<RifaDTO>>(rifas);
         }
 
-        //[HttpGet("{id:int}")]
-        //public async Task<ActionResult<RifaDTO>> GetById(int id)
-        //{
-        //    var rifa = await dbContext.Rifas.Include(RifaDB => RifaDB.participantes).AnyAsync(x => x.Id == id);
-        //    return mapper.Map<RifaDTO>(rifa);
-        //}
+        [HttpGet("{id:int}", Name = "obtenerRifa")]
+        public async Task<ActionResult<RifaDTOConParticipantes>> Get(int id)
+        {
+            var rifa = await dbContext.Rifas.Include(rifaDB => rifaDB.RifasParticipantes)
+                .ThenInclude(rifaparticipanteDB => rifaparticipanteDB.Participante)
+                .FirstOrDefaultAsync(rifaBD => rifaBD.Id == id);
+            if (rifa == null)
+            {
+                return NotFound();
+            }
+
+            return mapper.Map<RifaDTOConParticipantes>(rifa);
+        }
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] CrearRifaDTO crearRifaDTO)
@@ -51,7 +62,9 @@ namespace WebApiLoteria.Controllers
             var rifa = mapper.Map<Rifa>(crearRifaDTO);
             dbContext.Add(rifa);
             await dbContext.SaveChangesAsync();
-            return Ok();
+
+            var rifaDT0 = mapper.Map<RifaDTO>(rifa);
+            return CreatedAtRoute("obtenerRifa", new { id = rifa.Id }, rifaDT0);
         }
 
         [HttpPut("{id:int}")]
@@ -89,3 +102,4 @@ namespace WebApiLoteria.Controllers
 
     }
 }
+

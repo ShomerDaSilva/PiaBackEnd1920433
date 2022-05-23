@@ -31,29 +31,48 @@ namespace WebApiLoteria.Controllers
             return await dbContext.Participantes.ToListAsync();
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<ParticipanteDTO>> GetById(int id)
+        [HttpGet("{id:int}", Name = "obtenerParticipante")]
+        public async Task<ActionResult<GetParticipantesDTO>> GetById(int id)
         {
             logger.LogInformation("Se obtiene Participante por id");
+
             var participante = await dbContext.Participantes.FirstOrDefaultAsync(x => x.Id == id);
-            return mapper.Map<ParticipanteDTO>(participante);
+            if (participante == null)
+            {
+                return NotFound();
+            }
+            // participante.RifasParticipantes = participante.RifasParticipantes.OrderBy(x => x.Orden).ToList();
+            return mapper.Map<GetParticipantesDTO>(participante);
         }
 
-        [HttpPost]
-        [ServiceFilter(typeof(FiltroPersonalizado))]
-        public async Task<ActionResult> Post(CrearParticipanteDTO crearParticipanteDTO)
-        {
-            var existeRifa = await dbContext.Rifas.AnyAsync(x => x.Id == crearParticipanteDTO.RifaId);
+        //[HttpGet("{id:int}", Name = "obtenerParticipantedos")]
+        //public async Task<ActionResult<ParticipantesDTOConRifas>> GetById2(int id)
+        //{
+        //    logger.LogInformation("Se obtiene Participante por id");
+        //    var participante = await dbContext.Participantes.FirstOrDefaultAsync(x => x.Id == id);
+        //    participante.RifaParticipante = participante.RifaParticipante.OrderBy(x => x.Orden).ToList();
+        //    return mapper.Map<ParticipantesDTOConRifas>(participante);
+        //}
 
-            if (!existeRifa)
+        [HttpPost]
+        //[ServiceFilter(typeof(FiltroPersonalizado))]
+        public async Task<ActionResult> Post(ParticipanteDTO participanteDTO)
+        {
+            var existe = await dbContext.Participantes.AnyAsync(x => x.Id == participanteDTO.IdRifa);
+
+            if (existe)
             {
-                return BadRequest($"No existe rifa con el id: {crearParticipanteDTO.RifaId} ");
+                return BadRequest($"Ya existe esa rifa con el id {participanteDTO.IdRifa}");
             }
 
-            var participante = mapper.Map<Participante>(crearParticipanteDTO);
+            var participante = mapper.Map<Participante>(participanteDTO);
+
             dbContext.Add(participante);
             await dbContext.SaveChangesAsync();
-            return Ok();
+            var DTOparticipante = mapper.Map<GetParticipantesDTO>(participante);
+            return CreatedAtRoute("obtenerParticipante", new { id = participante.Id }, DTOparticipante);
+
+
         }
 
         [HttpPut("{id:int}")]
@@ -109,3 +128,5 @@ namespace WebApiLoteria.Controllers
         }
     }
 }
+
+

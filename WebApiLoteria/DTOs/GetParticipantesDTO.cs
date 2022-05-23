@@ -3,7 +3,7 @@ using WebApiLoteria.Validaciones;
 
 namespace WebApiLoteria.DTOs
 {
-    public class CrearParticipanteDTO
+    public class GetParticipantesDTO
     {
         [Required(ErrorMessage = "El campo {0} es necesario")]
         [StringLength(maximumLength: 15, ErrorMessage = "El campo {0} no puede tener mas de {1} caracteres")]
@@ -20,11 +20,6 @@ namespace WebApiLoteria.DTOs
         [PrimeraLetraMayuscula]
         public string ApellidoM { get; set; }
 
-        public DateTime FechaInscripcion { get; set; } 
-
         public int IdRifa { get; set; }
-
-
-
     }
 }

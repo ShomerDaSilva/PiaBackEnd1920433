@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiLoteria;
 
@@ -11,9 +12,10 @@ using WebApiLoteria;
 namespace WebApiLoteria.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220522223313_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,9 +240,6 @@ namespace WebApiLoteria.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<DateTime?>("FechaInscripcion")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(15)
@@ -267,24 +266,6 @@ namespace WebApiLoteria.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rifas");
-                });
-
-            modelBuilder.Entity("WebApiLoteria.Entidades.RifaParticipante", b =>
-                {
-                    b.Property<int>("RifaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ParticipanteId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Orden")
-                        .HasColumnType("int");
-
-                    b.HasKey("RifaId", "ParticipanteId");
-
-                    b.HasIndex("ParticipanteId");
-
-                    b.ToTable("RifasParticipantes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -336,35 +317,6 @@ namespace WebApiLoteria.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("WebApiLoteria.Entidades.RifaParticipante", b =>
-                {
-                    b.HasOne("WebApiLoteria.Entidades.Participante", "Participante")
-                        .WithMany("RifasParticipantes")
-                        .HasForeignKey("ParticipanteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebApiLoteria.Entidades.Rifa", "Rifa")
-                        .WithMany("RifasParticipantes")
-                        .HasForeignKey("RifaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Participante");
-
-                    b.Navigation("Rifa");
-                });
-
-            modelBuilder.Entity("WebApiLoteria.Entidades.Participante", b =>
-                {
-                    b.Navigation("RifasParticipantes");
-                });
-
-            modelBuilder.Entity("WebApiLoteria.Entidades.Rifa", b =>
-                {
-                    b.Navigation("RifasParticipantes");
                 });
 #pragma warning restore 612, 618
         }
